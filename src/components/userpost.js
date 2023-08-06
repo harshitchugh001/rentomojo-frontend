@@ -5,12 +5,14 @@ import Logout from './logout';
 import axios from 'axios';
 import likes from '../photos/likes.png';
 import disLikes from '../photos/dislikes.png';
+import NestedComments from './nestedcomments';
 
 export default function UserPost() {
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState([]);
   const user = JSON.parse(localStorage.getItem('user'));
   const userId = user ? user.userId : null;
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
 
   useEffect(() => {
     fetchComments();
@@ -61,6 +63,7 @@ export default function UserPost() {
   };
 
   const handleLike = async (commentId) => {
+    // console.log(commentId);
     try {
       const response = await axios.post(`${process.env.REACT_APP_API}/like`, { commentId, userId });
   
@@ -104,8 +107,8 @@ export default function UserPost() {
   const handleDislike = async (commentId) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API}/dislike`, { commentId, userId });
-  
       if (response.data.message) {
+        
         toast.warning(response.data.message, {
           position: 'top-center',
           autoClose: 3000,
@@ -140,6 +143,10 @@ export default function UserPost() {
         progress: undefined,
       });
     }
+  };
+  const handleCommentClick = (commentId) => {
+    // console.log(commentId);
+    setSelectedCommentId(commentId);
   };
 
   return (
@@ -180,7 +187,7 @@ export default function UserPost() {
                       </button>
                       <p>{comment.like}</p>
                     </div>
-                    <div className="flex-grow">
+                    <div className="flex-grow" onClick={() => handleCommentClick(comment._id)}>
                       <p>{comment.text}</p>
                       <p className="text-sm text-gray-500">By: {comment.user}</p>
                     </div>
@@ -191,6 +198,7 @@ export default function UserPost() {
                       <p>{comment.dislike}</p>
                     </div>
                   </div>
+                  {selectedCommentId === comment._id && <NestedComments commentId={comment._id} />}
                 </div>
               ))}
             </div>
