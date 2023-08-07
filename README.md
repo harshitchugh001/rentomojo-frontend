@@ -1,3 +1,6 @@
+#deploymentlink
+https://glistening-manatee-1be664.netlify.app/
+
 #video of the developmemt
 https://drive.google.com/file/d/1Nb_uYr40F1ly150CnUpN-6uggLVA3k7D/view?usp=drive_link
 
