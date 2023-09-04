@@ -13,14 +13,21 @@ export default function UserPost() {
   const user = JSON.parse(localStorage.getItem('user'));
   const userId = user ? user.userId : null;
   const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [currentPage]);
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API}/get-comments`);
+      const response = await axios.get(`${process.env.REACT_APP_API}/get-comments`, {
+        params: {
+          page: currentPage,
+          perPage: 10,
+        },
+      });
+      console.log(response.data);
       setComments(response.data);
     } catch (error) {
       console.log(error);
@@ -148,6 +155,15 @@ export default function UserPost() {
     // console.log(commentId);
     setSelectedCommentId(commentId);
   };
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div>
@@ -201,6 +217,20 @@ export default function UserPost() {
                   {selectedCommentId === comment._id && <NestedComments commentId={comment._id} />}
                 </div>
               ))}
+              <div className="flex justify-center mt-4">
+                <button
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-lg mr-2"
+                  onClick={prevPage}
+                >
+                  Previous
+                </button>
+                <button
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-lg"
+                  onClick={nextPage}
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </div>
