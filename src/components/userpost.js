@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Logout from './logout';
@@ -15,11 +15,7 @@ export default function UserPost() {
   const [selectedCommentId, setSelectedCommentId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    fetchComments();
-  }, [currentPage]);
-
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API}/get-comments`, {
         params: {
@@ -32,7 +28,13 @@ export default function UserPost() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [currentPage]);
+
+useEffect(() => {
+    fetchComments();
+}, [currentPage, fetchComments]);
+
+  
 
   const handlePostComment = async (e) => {
     e.preventDefault();
