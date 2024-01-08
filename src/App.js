@@ -2,6 +2,7 @@
 import './App.css';
 import Home from './components/home';
 import UserPost from './components/userpost';
+import Sample from './components/sample';
 import {
   BrowserRouter as Router,
   Routes,
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route key="Home" path='/' exact element={<Home></Home>} />
             <Route path='/userpost' exact element={<UserPost></UserPost>}></Route>
+            <Route path='/sample' exact element={<Sample></Sample>}></Route>
             <Route></Route>
           </Routes>
         </div>
