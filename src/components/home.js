@@ -12,7 +12,7 @@ export default function Home() {
 
   const openRegisterModal = () => {
     setIsRegisterOpen(true);
-  }
+  };
 
   const closeRegisterModal = () => {
     setIsRegisterOpen(false);
