@@ -19,6 +19,8 @@ const Login = ({ closeModal }) => {
       ...prevUser,
       [name]: value,
     }));
+
+    
   };
 
   const handleSubmit = (e) => {
